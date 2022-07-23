@@ -1,21 +1,37 @@
 import React, { useEffect, useState } from "react";
 import styles from "./App.module.css";
+import "./styles.css";
 import ErrorModal from "./components/ErrorModal/ErrorModal";
 import Form from "./components/Form/Form";
 import LoadingBar from "./components/LoadingBar/LoadingBar";
-import "./styles.css";
+import { NearEarthObject } from "./types/api.types";
+import { formatDateToYmd } from "./utils/formatDateToYmd";
+import { addDaysToDate } from "./utils/addDaysToDate";
+import { getNearest } from "./utils/getNearest";
 
 function App() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [resStatus, setResStatus] = useState<number>();
   const [fromDate, setFromDate] = useState<string>("");
   const [toDate, setToDate] = useState<string>("");
+  const [fetchUrl, setFetchUrl] = useState<string>(
+    `https://api.nasa.gov/neo/rest/v1/feed?start_date=${formatDateToYmd(
+      fromDate
+    )}&end_date=${addDaysToDate(fromDate, 7)}&api_key=${
+      process.env.REACT_APP_API_KEY
+    }`
+  );
+  const [nearEarthObjects, setNearEarthObjects] = useState<NearEarthObject[]>(
+    []
+  );
+  const [nearest, setNearest] = useState<NearEarthObject>();
 
-  useEffect(() => {
+  const getData = () => {
+    if (fromDate.length === 0 || toDate.length === 0) return;
+    if (toDate < fromDate) return;
+
     setIsLoading(true);
-    fetch(
-      `https://api.nasa.gov/neo/rest/v1/feed?start_date=2022-07-01&end_date=2022-07-01&api_key=${process.env.REACT_APP_API_KEY}`
-    )
+    fetch(fetchUrl)
       .then((res) => {
         if (!res.ok) {
           setResStatus(res.status);
@@ -27,7 +43,12 @@ function App() {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
+        const { near_earth_objects, links } = data;
+        setNearEarthObjects({
+          ...nearEarthObjects,
+          ...near_earth_objects,
+        });
+        setFetchUrl(links.next);
       })
       .catch((err) => {
         console.log(err);
@@ -35,7 +56,29 @@ function App() {
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  };
+
+  useEffect(() => {
+    setFetchUrl(
+      `https://api.nasa.gov/neo/rest/v1/feed?start_date=${formatDateToYmd(
+        fromDate
+      )}&end_date=${addDaysToDate(fromDate, 7)}&api_key=${
+        process.env.REACT_APP_API_KEY
+      }`
+    );
+  }, [fromDate]);
+
+  useEffect(() => {
+    if (
+      !Object.entries(nearEarthObjects).some(
+        (item) => item[0] === formatDateToYmd(toDate)
+      )
+    ) {
+      getData();
+    }
+    setNearest(getNearest(nearEarthObjects));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nearEarthObjects]);
 
   const handleInput = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -46,7 +89,12 @@ function App() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    getData();
+    setNearest(getNearest(nearEarthObjects));
   };
+
+  // TODO: remove later
+  console.log(nearest);
 
   return (
     <>
