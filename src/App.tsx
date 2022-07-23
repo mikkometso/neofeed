@@ -8,6 +8,7 @@ import { NearEarthObject } from "./types/api.types";
 import { formatDateToYmd } from "./utils/formatDateToYmd";
 import { addDaysToDate } from "./utils/addDaysToDate";
 import { getNearest } from "./utils/getNearest";
+import Nearest from "./components/Nearest/Nearest";
 
 function App() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -93,9 +94,6 @@ function App() {
     setNearest(getNearest(nearEarthObjects));
   };
 
-  // TODO: remove later
-  console.log(nearest);
-
   return (
     <>
       <LoadingBar isLoading={isLoading} />
@@ -125,6 +123,12 @@ function App() {
             <p>loading!</p>
           </div>
         )}
+        <Nearest
+          isLoading={isLoading}
+          nearest={nearest}
+          fromDate={fromDate}
+          toDate={toDate}
+        />
       </div>
     </>
   );
