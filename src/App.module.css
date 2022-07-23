@@ -9,3 +9,15 @@
   align-items: center;
   text-align: center;
 }
+
+.section {
+  margin: 2rem 0 3rem;
+}
+
+h1 {
+  margin-bottom: 1.5rem;
+}
+
+p {
+  margin-bottom: 0.5rem;
+}
