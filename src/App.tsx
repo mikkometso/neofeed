@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import styles from "./App.module.css";
 import ErrorModal from "./components/ErrorModal/ErrorModal";
+import Form from "./components/Form/Form";
 import LoadingBar from "./components/LoadingBar/LoadingBar";
 import "./styles.css";
 
 function App() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [resStatus, setResStatus] = useState<number>();
+  const [fromDate, setFromDate] = useState<string>("");
+  const [toDate, setToDate] = useState<string>("");
+
   useEffect(() => {
     setIsLoading(true);
     fetch(
@@ -32,6 +36,18 @@ function App() {
         setIsLoading(false);
       });
   }, []);
+
+  const handleInput = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    dataSettingFunction: (value: React.SetStateAction<string>) => void
+  ) => {
+    dataSettingFunction(event.target.value.trim());
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+  };
+
   return (
     <>
       <LoadingBar isLoading={isLoading} />
@@ -48,6 +64,19 @@ function App() {
             You should input date in format dd.mm.yyyy so for example 01.07.2022
           </p>
         </div>
+        <Form
+          handleSubmit={handleSubmit}
+          handleInput={handleInput}
+          fromDate={fromDate}
+          setFromDate={setFromDate}
+          toDate={toDate}
+          setToDate={setToDate}
+        />
+        {isLoading && (
+          <div className={styles.section}>
+            <p>loading!</p>
+          </div>
+        )}
       </div>
     </>
   );
