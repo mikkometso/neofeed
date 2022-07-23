@@ -1,0 +1,11 @@
+.App {
+  background-image: url("../public/meteor_dark.jpg");
+  background-repeat: repeat-x repeat-y;
+  height: 100vh;
+  color: var(--primary-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
