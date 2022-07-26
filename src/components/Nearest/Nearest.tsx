@@ -13,15 +13,17 @@ const Nearest: React.FC<{
     <>
       {!isLoading && nearest && (
         <div className={styles.section}>
+          <h2>Nearest asteroid</h2>
           <p>
-            {`Between ${new Date(fromDate).toDateString()} and ${new Date(
-              toDate
-            ).toDateString()}, the closest asteroid was:`}
+            Between {fromDate} and {toDate}
           </p>
-          <p>{`id: ${nearest?.id}`}</p>
-          <p>{`"name": "${nearest?.name}",`}</p>
-          <p>{`"miss_distance.kilometers": "
-      ${nearest?.close_approach_data[0].miss_distance.kilometers}"`}</p>
+          <p>the closest asteroid was:</p>
+          <p>id: {nearest?.id}</p>
+          <p>"name": "{nearest?.name}",</p>
+          <p>
+            "miss_distance.kilometers": "
+            {nearest?.close_approach_data[0].miss_distance.kilometers}"
+          </p>
         </div>
       )}
     </>
