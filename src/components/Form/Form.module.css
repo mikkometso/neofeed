@@ -24,6 +24,7 @@ input:focus {
 }
 
 input[type="submit"] {
+  cursor: pointer;
   padding: 0.5rem 2rem;
   margin: 1rem 0;
   background-color: transparent;

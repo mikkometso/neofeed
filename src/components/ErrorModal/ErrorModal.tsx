@@ -1,16 +1,21 @@
 import React from "react";
 import styles from "./ErrorModal.module.css";
 
-const ErrorModal: React.FC<{ resStatus: number | undefined }> = (props) => {
-  const { resStatus } = props;
+const ErrorModal: React.FC<{
+  error: string | undefined;
+}> = (props) => {
+  const { error } = props;
+
   return (
     <>
-      {resStatus && resStatus !== 200 && (
+      {error && error !== undefined && (
         <div className={styles.errorContainer}>
-          <h2>HTTP error: {resStatus}</h2>
+          <h2>Errrrorr:</h2>
           <p>Bee-baa buu-baa :(</p>
           <br />
-          <p>Try refreshing your browser</p>
+          <p>{error}</p>
+          <br />
+          <p>Continue by refreshing the page</p>
         </div>
       )}
     </>
