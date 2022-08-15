@@ -39,7 +39,7 @@ function useFetch(fromDate: string, toDate: string) {
     if (d1 <= d2 && d2 <= d1PlusWeek) {
       setLoading(true);
       fetch(
-        `https://api.nasa.gov/neo/rest/v1/feed?start_datee=${formatDateToYmd(
+        `https://api.nasa.gov/neo/rest/v1/feed?start_date=${formatDateToYmd(
           fromDate
         )}&end_date=${d2}&api_key=${process.env.REACT_APP_API_KEY}`
       )

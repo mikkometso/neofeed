@@ -38,6 +38,8 @@ REACT_APP_API_KEY=YOUR-APIKEY-HERE
 
 - Write tests to at least ensure sorting logic of the data and that utils functions work accordingly
 
+- Improve displaying errors by making sure all error messages come through and by adding some sort of close toggle to ErrorModal
+
 ---
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
